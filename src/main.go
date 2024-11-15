@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"log"
+
 	"old_ciphers/cipher" // Поменяйте на ваш правильный путь
 )
 
@@ -49,7 +49,6 @@ func main() {
 	// и обработки ошибок
 	err := simulateError() // Функция, которая может генерировать ошибку
 	if err != nil {
-		log.Fatal("Error occurred: ", err)
 	}
 }
 
