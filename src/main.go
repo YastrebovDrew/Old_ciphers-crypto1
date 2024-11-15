@@ -10,6 +10,16 @@ func main() {
 	// Пример использования шифров
 	text := "Hello, my name is Yastrebov Andrey!"
 
+
+	// Caesar Cipher
+	caesar := cipher.CaesarCipher{} // Создаем объект шифра Цезаря
+	shift := 3 // Сдвиг для шифра Цезаря
+	encryptedCaesar := caesar.Encrypt(text, shift)
+	decryptedCaesar := caesar.Decrypt(encryptedCaesar, shift)
+	fmt.Println("\nCaesar Cipher:")
+	fmt.Println("Encrypted:", encryptedCaesar)
+	fmt.Println("Decrypted:", decryptedCaesar)
+
 	// Substitution Cipher
 	substitution := cipher.NewSubstitutionCipher() // Генерация случайного ключа
 	encryptedSub := substitution.Encrypt(text)
@@ -29,7 +39,7 @@ func main() {
 
 	// Vigenere Cipher
 	vigenere := cipher.NewVigenereCipher()
-	keyVigenere := "KEY"
+	keyVigenere := "key"
 	encryptedVigenere := vigenere.Encrypt(text, keyVigenere)
 	decryptedVigenere := vigenere.Decrypt(encryptedVigenere, keyVigenere)
 	fmt.Println("\nVigenere Cipher:")
@@ -37,19 +47,12 @@ func main() {
 	fmt.Println("Decrypted:", decryptedVigenere)
 
 	// Enigma Machine
-	enigma := cipher.NewEnigmaMachine() // Предположим, что у вас есть такая функция
+	enigma := cipher.NewEnigmaMachine()
 	encryptedEnigma := enigma.Encrypt(text)
 	decryptedEnigma := enigma.Decrypt(encryptedEnigma)
 	fmt.Println("\nEnigma Machine:")
 	fmt.Println("Encrypted:", encryptedEnigma)
 	fmt.Println("Decrypted:", decryptedEnigma)
-
-	// Пример работы с ошибками
-	// Если вы хотите обработать возможные ошибки, то используйте `log.Fatal` для остановки
-	// и обработки ошибок
-	err := simulateError() // Функция, которая может генерировать ошибку
-	if err != nil {
-	}
 }
 
 // simulateError - пример функции, которая может вызвать ошибку.

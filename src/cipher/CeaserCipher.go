@@ -21,12 +21,13 @@ func (c CaesarCipher) Encrypt(text string, key int) string {
 			}
 
 			// Вычисляем новый символ с учетом сдвига
-			// - Преобразуем символ в целочисленное значение (int(char))
-			// - Вычитаем базу (shiftBase), чтобы получить позицию буквы в алфавите (0-25)
-			// - Добавляем ключ (key) и берем остаток от 26, чтобы избежать выхода за пределы алфавита
-			// - Добавляем базу обратно для получения правильного символа
-			shiftedChar := (int(char)-int(shiftBase)+key)%26 + int(shiftBase)
-
+			// Для правильного поведения при сдвиге за пределы диапазона (например, Z -> A или z -> a)
+			shiftedChar := (int(char)-int(shiftBase)+key) % 26
+			if shiftedChar < 0 {
+				shiftedChar += 26 // Учитываем отрицательные сдвиги
+			}
+			shiftedChar += int(shiftBase)
+			
 			// Добавляем новый символ к результату
 			result += string(rune(shiftedChar))
 		} else {
