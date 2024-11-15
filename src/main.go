@@ -1,77 +1,59 @@
 package main
 
 import (
-    "fmt"
-    "your_module_name/cipher" // Импортируем пакет с шифрами
+	"fmt"
+	"log"
+	"old_ciphers/cipher" // Поменяйте на ваш правильный путь
 )
 
 func main() {
-    plaintext := "Hello, my name is Kalashov Feodor Olegovich and I am a 4th year student of group N34481"
+	// Пример использования шифров
+	text := "Hello, my name is Yastrebov Andrey!"
 
-    // Шифр Цезаря
-    caesarCipher := cipher.CaesarCipher{}
-    shift := 3
+	// Substitution Cipher
+	substitution := cipher.NewSubstitutionCipher() // Генерация случайного ключа
+	encryptedSub := substitution.Encrypt(text)
+	decryptedSub := substitution.Decrypt(encryptedSub)
+	fmt.Println("Substitution Cipher:")
+	fmt.Println("Encrypted:", encryptedSub)
+	fmt.Println("Decrypted:", decryptedSub)
 
-    encryptedText := caesarCipher.Encryption(plaintext, shift)
-    fmt.Println("Зашифрованный текст шифра Цезаря:", encryptedText)
+	// Transposition Cipher
+	transposition := cipher.TranspositionCipher{}
+	key := "KEY"
+	encryptedTrans := transposition.Encrypt(text, key)
+	decryptedTrans := transposition.Decrypt(encryptedTrans, key)
+	fmt.Println("\nTransposition Cipher:")
+	fmt.Println("Encrypted:", encryptedTrans)
+	fmt.Println("Decrypted:", decryptedTrans)
 
-    decryptedText := caesarCipher.Decryption(encryptedText, shift)
-    fmt.Println("Расшифрованный текст шифра Цезаря:", decryptedText)
+	// Vigenere Cipher
+	vigenere := cipher.NewVigenereCipher()
+	keyVigenere := "KEY"
+	encryptedVigenere := vigenere.Encrypt(text, keyVigenere)
+	decryptedVigenere := vigenere.Decrypt(encryptedVigenere, keyVigenere)
+	fmt.Println("\nVigenere Cipher:")
+	fmt.Println("Encrypted:", encryptedVigenere)
+	fmt.Println("Decrypted:", decryptedVigenere)
 
-    fmt.Println("\n")
+	// Enigma Machine
+	enigma := cipher.NewEnigmaMachine() // Предположим, что у вас есть такая функция
+	encryptedEnigma := enigma.Encrypt(text)
+	decryptedEnigma := enigma.Decrypt(encryptedEnigma)
+	fmt.Println("\nEnigma Machine:")
+	fmt.Println("Encrypted:", encryptedEnigma)
+	fmt.Println("Decrypted:", decryptedEnigma)
 
-    // Моноалфавитный шифр замены
-    substitutionCipher := cipher.SubstitutionCipher{}
+	// Пример работы с ошибками
+	// Если вы хотите обработать возможные ошибки, то используйте `log.Fatal` для остановки
+	// и обработки ошибок
+	err := simulateError() // Функция, которая может генерировать ошибку
+	if err != nil {
+		log.Fatal("Error occurred: ", err)
+	}
+}
 
-    substitutionEncrypted := substitutionCipher.Encryption(plaintext)
-    fmt.Println("Зашифрованный текст шифра замены:", substitutionEncrypted)
-
-    substitutionDecrypted := substitutionCipher.Decryption(substitutionEncrypted)
-    fmt.Println("Расшифрованный текст шифра замены:", substitutionDecrypted)
-
-    fmt.Println("\n")
-
-    // Моноалфавитный шифр перестановки
-    transpositionCipher := cipher.TranspositionCipher{}
-    transpositionKey := "4312"
-
-    encryptedText = transpositionCipher.Encryption(plaintext, transpositionKey)
-    fmt.Println("Зашифрованный текст шифра перестановки:", encryptedText)
-
-    decryptedText = transpositionCipher.Decryption(encryptedText, transpositionKey)
-    fmt.Println("Расшифрованный текст шифра перестановки:", decryptedText)
-
-    fmt.Println("\n")
-
-    vigenereCipher := cipher.VigenereCipher{}
-    vigenereKey := "LEMON"
-
-    encryptedText = vigenereCipher.Encryption(plaintext, vigenereKey)
-    fmt.Println("Зашифрованный текст шифра Виженера:", encryptedText)
-
-    decryptedText = vigenereCipher.Decryption(encryptedText, vigenereKey)
-    fmt.Println("Расшифрованный текст шифра Виженера:", decryptedText)
-
-    fmt.Println("\n")
-
-    // Настройки машины "Энигма"
-    rotor1 := cipher.Rotor{Wiring: "EKMFLGDQVZNTOWYHXUSPAIBRCJ", Notch: 16}
-    rotor2 := cipher.Rotor{Wiring: "AJDKSIRUXBLHWTMCQGZNPYFVOE", Notch: 4}
-    rotor3 := cipher.Rotor{Wiring: "BDFHJLCPRTXVZNYEIWGAKMUSQO", Notch: 21}
-    reflector := cipher.Reflector{Wiring: "YRUHQSLDPXNGOKMIEBFZCWVJAT"}
-
-    // Создание машины и шифрование
-    enigma := cipher.EnigmaMachine{Rotors: []cipher.Rotor{rotor1, rotor2, rotor3}, Reflector: reflector}
-    message := "HELLOMYNAMEISKALASHOVFEODOROLEGOVICH"
-    encryptedMessage := enigma.EncodeMessage(message)
-    fmt.Println("Зашифрованное сообщение:", encryptedMessage)
-
-    // Сброс позиции роторов перед дешифрованием
-    enigma.Rotors[0].Position = 0
-    enigma.Rotors[1].Position = 0
-    enigma.Rotors[2].Position = 0
-
-    // Дешифрование сообщения
-    decryptedMessage := enigma.EncodeMessage(encryptedMessage)
-    fmt.Println("Расшифрованное сообщение:", decryptedMessage)
+// simulateError - пример функции, которая может вызвать ошибку.
+func simulateError() error {
+	return fmt.Errorf("simulated error")
 }

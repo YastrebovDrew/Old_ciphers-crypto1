@@ -16,16 +16,16 @@ func NewVigenereCipher() VigenereCipher {
 	}
 }
 
-// extendKey расширяет ключ до длины текста, чтобы использовать его для шифрования и дешифрования.
+// extendKey расширяет ключ до длины текста.
 func (vc VigenereCipher) extendKey(text, key string) string {
 	var extendedKey []rune
 	keyIndex := 0
 	for _, char := range text {
-		if unicode.IsLetter(char) { // Проверяем, является ли символ буквой
+		if unicode.IsLetter(char) {
 			extendedKey = append(extendedKey, rune(key[keyIndex%len(key)]))
-			keyIndex++ // Увеличиваем индекс ключа только для букв
+			keyIndex++
 		} else {
-			extendedKey = append(extendedKey, char) // Оставляем небуквенные символы без изменений
+			extendedKey = append(extendedKey, char)
 		}
 	}
 	return string(extendedKey)
@@ -34,43 +34,47 @@ func (vc VigenereCipher) extendKey(text, key string) string {
 // Encrypt шифрует текст с использованием шифра Виженера.
 func (vc VigenereCipher) Encrypt(text, key string) string {
 	var result []rune
-	extendedKey := vc.extendKey(text, key) // Расширяем ключ до длины текста
+	extendedKey := vc.extendKey(text, key)
+
 	for i, char := range text {
 		if unicode.IsUpper(char) {
 			shiftBase := int('A')
-			shift := int(rune(extendedKey[i]) - 'A') // Сдвиг для заглавных
+			shift := int(rune(extendedKey[i]) - 'A')
 			encryptedChar := rune((int(char)-shiftBase+shift)%26 + shiftBase)
 			result = append(result, encryptedChar)
 		} else if unicode.IsLower(char) {
 			shiftBase := int('a')
-			shift := int(rune(extendedKey[i]) - 'a') // Сдвиг для строчных
+			shift := int(rune(extendedKey[i]) - 'a')
 			encryptedChar := rune((int(char)-shiftBase+shift)%26 + shiftBase)
 			result = append(result, encryptedChar)
 		} else {
-			result = append(result, char) // Оставляем пробелы и символы без изменений
+			result = append(result, char)
 		}
 	}
+
 	return string(result)
 }
 
 // Decrypt расшифровывает текст с использованием шифра Виженера.
 func (vc VigenereCipher) Decrypt(text, key string) string {
 	var result []rune
-	extendedKey := vc.extendKey(text, key) // Расширяем ключ до длины текста
+	extendedKey := vc.extendKey(text, key)
+
 	for i, char := range text {
 		if unicode.IsUpper(char) {
 			shiftBase := int('A')
-			shift := int(rune(extendedKey[i]) - 'A') // Сдвиг для заглавных
+			shift := int(rune(extendedKey[i]) - 'A')
 			decryptedChar := rune((int(char)-shiftBase-shift+26)%26 + shiftBase)
 			result = append(result, decryptedChar)
 		} else if unicode.IsLower(char) {
 			shiftBase := int('a')
-			shift := int(rune(extendedKey[i]) - 'a') // Сдвиг для строчных
+			shift := int(rune(extendedKey[i]) - 'a')
 			decryptedChar := rune((int(char)-shiftBase-shift+26)%26 + shiftBase)
 			result = append(result, decryptedChar)
 		} else {
-			result = append(result, char) // Оставляем пробелы и символы без изменений
+			result = append(result, char)
 		}
 	}
+
 	return string(result)
 }
